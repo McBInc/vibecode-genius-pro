@@ -1,0 +1,97 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeCode Genius Pro - Pricing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-purple-50 to-blue-50 min-h-screen">
+    <div class="container mx-auto px-6 py-12">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-slate-900 mb-4">Choose Your Plan</h1>
+            <p class="text-xl text-slate-600">Start analyzing code with AI-powered insights</p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <!-- Starter Plan -->
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-slate-900 mb-4">Starter</h3>
+                <div class="text-4xl font-bold text-blue-600 mb-6">$29<span class="text-lg text-slate-500">/mo</span></div>
+                <ul class="space-y-3 mb-8">
+                    <li>✅ 10 analyses per month</li>
+                    <li>✅ Basic patent scoring</li>
+                    <li>✅ Security analysis</li>
+                    <li>✅ PDF reports</li>
+                </ul>
+                <button onclick="subscribe('price_starter')" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                    Get Started
+                </button>
+            </div>
+            
+            <!-- Professional Plan -->
+            <div class="bg-white rounded-lg shadow-lg p-8 ring-2 ring-blue-500 scale-105">
+                <div class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm inline-block mb-4">Most Popular</div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-4">Professional</h3>
+                <div class="text-4xl font-bold text-blue-600 mb-6">$99<span class="text-lg text-slate-500">/mo</span></div>
+                <ul class="space-y-3 mb-8">
+                    <li>✅ 100 analyses per month</li>
+                    <li>✅ Advanced patent scoring</li>
+                    <li>✅ Team access (10 users)</li>
+                    <li>✅ API access</li>
+                    <li>✅ Priority support</li>
+                </ul>
+                <button onclick="subscribe('price_professional')" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                    Get Started
+                </button>
+            </div>
+            
+            <!-- Enterprise Plan -->
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-slate-900 mb-4">Enterprise</h3>
+                <div class="text-4xl font-bold text-blue-600 mb-6">$299<span class="text-lg text-slate-500">/mo</span></div>
+                <ul class="space-y-3 mb-8">
+                    <li>✅ Unlimited analyses</li>
+                    <li>✅ White-label reports</li>
+                    <li>✅ Custom integrations</li>
+                    <li>✅ Dedicated support</li>
+                    <li>✅ SLA guarantee</li>
+                </ul>
+                <button onclick="subscribe('price_enterprise')" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                    Contact Sales
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function subscribe(priceId) {
+            try {
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        priceId: priceId,
+                        planName: priceId.replace('price_', ''),
+                        successUrl: window.location.origin + '/success.html',
+                        cancelUrl: window.location.origin + '/pricing.html'
+                    }),
+                });
+
+                const session = await response.json();
+                
+                if (session.url) {
+                    window.location.href = session.url;
+                } else {
+                    alert('Error creating checkout session');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error processing payment');
+            }
+        }
+    </script>
+</body>
+</html>
